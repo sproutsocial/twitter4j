@@ -3,11 +3,7 @@
 
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-http2-support</artifactId>
-<<<<<<< HEAD
-    <version>4.0.5-allowdmsfrom3</version>
-=======
-    <version>4.0.5</version>
->>>>>>> 4ebca9da71b271775624b11b5197af99a57bf175
+    <version>4.0.5-allowdmsfrom4</version>
     <packaging>jar</packaging>
     <name>twitter4j-http2-support</name>
     <description>A Java library for the Twitter API</description>
@@ -93,11 +89,7 @@
         <dependency>
             <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-<<<<<<< HEAD
             <version>4.0.5-allowdmsfrom3</version>
-=======
-            <version>4.0.5</version>
->>>>>>> 4ebca9da71b271775624b11b5197af99a57bf175
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

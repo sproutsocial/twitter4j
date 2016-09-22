@@ -3,7 +3,7 @@
 
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>4.0.5-allowdmsfrom3</version>
+    <version>4.0.5-allowdmsfrom5</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -44,7 +44,7 @@
     <distributionManagement>
        <repository>
 	       <id>internal</id>
-	             <url>http://sprout-archiva01.int.sproutsocial.com:8080/archiva/repository/internal/</url>
+	             <url>http://nexus.int.sproutsocial.com:8081/nexus/content/repositories/releases</url>
 		         </repository>
     </distributionManagement>
     <profiles>

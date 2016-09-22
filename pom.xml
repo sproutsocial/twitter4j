@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
-    <version>4.0.5-allowdmsfrom</version>
+    <version>4.0.5-allowdmsfrom5</version>
     <packaging>pom</packaging>
     <name>twitter4j</name>
     <description>A Java library for the Twitter API</description>
@@ -88,7 +88,7 @@
         <module>twitter4j-async</module>
         <module>twitter4j-core</module>
         <module>twitter4j-examples</module>
-        <module>twitter4j-appengine</module>
+        <!--<module>twitter4j-appengine</module>-->
         <module>twitter4j-http2-support</module>
         <module>twitter4j-stream</module>
         <module>twitter4j-media-support</module>
