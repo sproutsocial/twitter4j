@@ -2,7 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
+<<<<<<< HEAD
     <version>4.0.5-allowdmsfrom</version>
+=======
+    <version>4.0.5</version>
+>>>>>>> 4ebca9da71b271775624b11b5197af99a57bf175
     <packaging>pom</packaging>
     <name>twitter4j</name>
     <description>A Java library for the Twitter API</description>
@@ -16,10 +20,11 @@
     </licenses>
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
-        <connection>scm:git:git://github.com/yusuke/twitter4j.git</connection>
-        <developerConnection>scm:git:git://github.com/yusuke/twitter4j.git
+        <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
+        <developerConnection>scm:git:https://github.com/yusuke/twitter4j.git
         </developerConnection>
 
+    <tag>4.0.5</tag>
   </scm>
     <developers>
         <developer>
