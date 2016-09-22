@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.twitter4j</groupId>
+    <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>4.0.5-SNAPSHOT</version>
+    <version>4.0.5-allowdmsfrom3</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -41,19 +41,10 @@
         <url>http://issue.twitter4j.org/youtrack/issues?q=project%3A+Twitter4J</url>
     </issueManagement>
     <distributionManagement>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>org.twitter4j</id>
-            <name>twitter4j.org Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>file:${user.home}/maven2/</url>
-        </snapshotRepository>
+       <repository>
+	       <id>internal</id>
+	             <url>http://sprout-archiva01.int.sproutsocial.com:8080/archiva/repository/internal/</url>
+		         </repository>
     </distributionManagement>
     <profiles>
         <profile>
