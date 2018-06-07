@@ -35,6 +35,7 @@ import twitter4j.conf.Configuration;
     private final boolean sourceFollowingTarget;
     private final boolean sourceFollowedByTarget;
     private final boolean sourceCanDm;
+    private final boolean sourceMutingTarget;
     private final long sourceUserId;
     private final String sourceUserScreenName;
     private boolean wantRetweets;
@@ -65,6 +66,7 @@ import twitter4j.conf.Configuration;
             sourceFollowingTarget = ParseUtil.getBoolean("following", sourceJson);
             sourceFollowedByTarget = ParseUtil.getBoolean("followed_by", sourceJson);
             sourceCanDm = ParseUtil.getBoolean("can_dm", sourceJson);
+            sourceMutingTarget = ParseUtil.getBoolean("muting", sourceJson);
             sourceNotificationsEnabled = ParseUtil.getBoolean("notifications_enabled", sourceJson);
             wantRetweets = ParseUtil.getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
@@ -113,7 +115,7 @@ import twitter4j.conf.Configuration;
     public boolean isSourceBlockingTarget() {
         return sourceBlockingTarget;
     }
-
+    
     @Override
     public String getSourceUserScreenName() {
         return sourceUserScreenName;
@@ -150,6 +152,11 @@ import twitter4j.conf.Configuration;
     }
 
     @Override
+    public boolean isSourceMutingTarget() {
+        return sourceMutingTarget;
+    }
+
+    @Override
     public boolean isSourceNotificationsEnabled() {
         return sourceNotificationsEnabled;
     }
@@ -162,15 +169,22 @@ import twitter4j.conf.Configuration;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Relationship)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        Relationship that = (Relationship) o;
+        RelationshipJSONImpl that = (RelationshipJSONImpl) o;
 
-        if (sourceUserId != that.getSourceUserId()) return false;
-        if (targetUserId != that.getTargetUserId()) return false;
-        if (!sourceUserScreenName.equals(that.getSourceUserScreenName()))
+        if (sourceBlockingTarget != that.sourceBlockingTarget) return false;
+        if (sourceCanDm != that.sourceCanDm) return false;
+        if (sourceFollowedByTarget != that.sourceFollowedByTarget) return false;
+        if (sourceFollowingTarget != that.sourceFollowingTarget) return false;
+        if (sourceMutingTarget != that.sourceMutingTarget) return false;
+        if (sourceNotificationsEnabled != that.sourceNotificationsEnabled) return false;
+        if (sourceUserId != that.sourceUserId) return false;
+        if (targetUserId != that.targetUserId) return false;
+        if (wantRetweets != that.wantRetweets) return false;
+        if (sourceUserScreenName != null ? !sourceUserScreenName.equals(that.sourceUserScreenName) : that.sourceUserScreenName != null)
             return false;
-        if (!targetUserScreenName.equals(that.getTargetUserScreenName()))
+        if (targetUserScreenName != null ? !targetUserScreenName.equals(that.targetUserScreenName) : that.targetUserScreenName != null)
             return false;
 
         return true;
@@ -185,22 +199,27 @@ import twitter4j.conf.Configuration;
         result = 31 * result + (sourceFollowingTarget ? 1 : 0);
         result = 31 * result + (sourceFollowedByTarget ? 1 : 0);
         result = 31 * result + (sourceCanDm ? 1 : 0);
+        result = 31 * result + (sourceMutingTarget ? 1 : 0);
         result = 31 * result + (int) (sourceUserId ^ (sourceUserId >>> 32));
         result = 31 * result + (sourceUserScreenName != null ? sourceUserScreenName.hashCode() : 0);
+        result = 31 * result + (wantRetweets ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "RelationshipJSONImpl{" +
-                "sourceUserId=" + sourceUserId +
-                ", targetUserId=" + targetUserId +
-                ", sourceUserScreenName='" + sourceUserScreenName + '\'' +
+                "targetUserId=" + targetUserId +
                 ", targetUserScreenName='" + targetUserScreenName + '\'' +
+                ", sourceBlockingTarget=" + sourceBlockingTarget +
+                ", sourceNotificationsEnabled=" + sourceNotificationsEnabled +
                 ", sourceFollowingTarget=" + sourceFollowingTarget +
                 ", sourceFollowedByTarget=" + sourceFollowedByTarget +
                 ", sourceCanDm=" + sourceCanDm +
-                ", sourceNotificationsEnabled=" + sourceNotificationsEnabled +
+                ", sourceMutingTarget=" + sourceMutingTarget +
+                ", sourceUserId=" + sourceUserId +
+                ", sourceUserScreenName='" + sourceUserScreenName + '\'' +
+                ", wantRetweets=" + wantRetweets +
                 '}';
     }
 }

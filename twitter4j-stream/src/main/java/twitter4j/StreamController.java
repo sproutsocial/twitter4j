@@ -46,7 +46,7 @@ public class StreamController {
     }
 
     void setControlURI(String controlURI) {
-        this.controlURI = controlURI.replace("/1.1//1.1/", "/1.1/");
+        this.controlURI = (controlURI!=null) ?controlURI.replace("/1.1//1.1/", "/1.1/") : null;
         synchronized (lock) {
             lock.notifyAll();
         }
@@ -79,7 +79,7 @@ public class StreamController {
         return new ControlStreamInfo(this, res.asJSONObject());
     }
 
-    public String addUsers(long[] userIds) throws TwitterException {
+    public String addUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
@@ -88,7 +88,7 @@ public class StreamController {
         return res.asString();
     }
 
-    public String removeUsers(long[] userIds) throws TwitterException {
+    public String removeUsers(long... userIds) throws TwitterException {
         ensureControlURISet();
         HttpParameter param = new HttpParameter("user_id",
                 StringUtil.join(userIds));
@@ -138,18 +138,22 @@ public class StreamController {
             }
         }
 
+        @Override
         public boolean hasPrevious() {
             return 0 != previousCursor;
         }
 
+        @Override
         public long getPreviousCursor() {
             return previousCursor;
         }
 
+        @Override
         public boolean hasNext() {
             return 0 != nextCursor;
         }
 
+        @Override
         public long getNextCursor() {
             return nextCursor;
         }

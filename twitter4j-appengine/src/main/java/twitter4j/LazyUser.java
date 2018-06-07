@@ -70,6 +70,15 @@ final class LazyUser implements twitter4j.User {
     public String getName() {
         return getTarget().getName();
     }
+    
+    /**
+     * Returns the email of the user
+     *
+     * @return the email of the user
+     */
+    public String getEmail() {
+        return getTarget().getEmail();
+    }
 
 
     /**
@@ -182,6 +191,10 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getOriginalProfileImageURLHttps();
     }
 
+    @Override
+    public boolean isDefaultProfileImage() {
+        return getTarget().isDefaultProfileImage();
+    }
 
     /**
      * Returns the url of the user
@@ -252,6 +265,11 @@ final class LazyUser implements twitter4j.User {
     @Override
     public boolean isProfileUseBackgroundImage() {
         return getTarget().isProfileUseBackgroundImage();
+    }
+
+    @Override
+    public boolean isDefaultProfile() {
+        return getTarget().isDefaultProfile();
     }
 
     @Override
@@ -394,6 +412,10 @@ final class LazyUser implements twitter4j.User {
      */
     public boolean isFollowRequestSent() {
         return getTarget().isFollowRequestSent();
+    }
+
+    public String[] getWithheldInCountries() {
+        return getTarget().getWithheldInCountries();
     }
 
     public RateLimitStatus getRateLimitStatus() {

@@ -37,6 +37,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return the name of the user
      */
     String getName();
+    
+    /**
+     * Returns the email of the user, if the app is whitelisted by Twitter
+     *
+     * @return the email of the user
+     */
+    String getEmail();
 
     /**
      * Returns the screen name of the user
@@ -89,6 +96,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getOriginalProfileImageURLHttps();
 
     /**
+     * Tests if the user has not uploaded their own avatar
+     *
+     * @return if the user has not uploaded their own avatar
+     */
+    boolean isDefaultProfileImage();
+
+    /**
      * Returns the url of the user
      *
      * @return the url of the user
@@ -131,8 +145,20 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     boolean isProfileUseBackgroundImage();
 
+    /**
+     * Tests if the user has not altered the theme or background
+     *
+     * @return if the user has not altered the theme or background
+     */
+    boolean isDefaultProfile();
+
     boolean isShowAllInlineMedia();
 
+    /**
+     * Returns the number of users the user follows (AKA "followings")
+     *
+     * @return the number of users the user follows
+     */
     int getFriendsCount();
 
     Date getCreatedAt();
@@ -149,31 +175,37 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner URL
      */
     String getProfileBannerURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner retina URL
      */
     String getProfileBannerRetinaURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner iPad URL
      */
     String getProfileBannerIPadURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner iPad retina URL
      */
     String getProfileBannerIPadRetinaURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner mobile URL
      */
     String getProfileBannerMobileURL();
 
     /**
      * @since Twitter4J 3.0.0
+     * @return profile banner mobile retina URL
      */
     String getProfileBannerMobileRetinaURL();
 
@@ -241,5 +273,12 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     URLEntity getURLEntity();
 
+    /**
+     *  Returns the list of country codes where the user is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
 
 }

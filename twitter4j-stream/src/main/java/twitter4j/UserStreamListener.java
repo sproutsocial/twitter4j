@@ -125,6 +125,18 @@ public interface UserStreamListener extends StatusListener {
     void onUserProfileUpdate(User updatedUser);
 
     /**
+     * @param suspendedUser suspended user id
+     * @since Twitter4J 4.0.3
+     */
+    void onUserSuspension(long suspendedUser);
+
+    /**
+     * @param deletedUser deleted user id
+     * @since Twitter4J 4.0.3
+     */
+    void onUserDeletion(long deletedUser);
+
+    /**
      * @param source      source user of the event
      * @param blockedUser the user blocked
      * @since Twitter4J 2.1.3
@@ -137,4 +149,28 @@ public interface UserStreamListener extends StatusListener {
      * @since Twitter4J 2.1.3
      */
     void onUnblock(User source, User unblockedUser);
+
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @param retweetedStatus status retweeted retweet
+     * @since Twitter4J 4.0.4
+     */
+    void onRetweetedRetweet(User source,User target, Status retweetedStatus);
+
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @param favoritedRetweeet status favorited retweet
+     * @since Twitter4J 4.0.4
+     */
+    void onFavoritedRetweet(User source,User target, Status favoritedRetweeet);
+
+    /**
+     * @param source          source user of the event
+     * @param target          target user of the event
+     * @param quotingTweet    status quoting the tweet
+     * @since Twitter4J 4.0.4
+     */
+    void onQuotedTweet(User source, User target, Status quotingTweet);
 }

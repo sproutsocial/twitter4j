@@ -20,6 +20,7 @@ import java.util.Date;
 
 /**
  * A data interface representing one single status of a user.
+ * (e.g. https://dev.twitter.com/rest/reference/get/statuses/show/%3Aid)
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -36,21 +37,25 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the id of the status
      *
-     * @return the id
+     * @return the id (e.g. 210462857140252672)
      */
     long getId();
 
     /**
      * Returns the text of the status
      *
-     * @return the text
+     * @return the text (e.g. Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC)
      */
     String getText();
+
+    int getDisplayTextRangeStart();
+
+    int getDisplayTextRangeEnd();
 
     /**
      * Returns the source
      *
-     * @return the source
+     * @return the source (e.g. &lt;a href="http://twitter.com" rel="nofollow"&gt;Twitter Web Client&lt;/a&gt;)
      * @since Twitter4J 1.0.4
      */
     String getSource();
@@ -130,7 +135,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Return the user associated with the status.<br>
-     * This can be null if the instance if from User.getStatus().
+     * This can be null if the instance is from User.getStatus().
      *
      * @return the user
      */
@@ -138,11 +143,13 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * @since Twitter4J 2.0.10
+     * @return if the status is retweet or not
      */
     boolean isRetweet();
 
     /**
      * @since Twitter4J 2.1.0
+     * @return retweeted status
      */
     Status getRetweetedStatus();
 
@@ -150,6 +157,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * Returns an array of contributors, or null if no contributor is associated with this status.
      *
      * @since Twitter4J 2.2.3
+     * @return contributors
      */
     long[] getContributors();
 
@@ -190,7 +198,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the lang of the status text if available.
      *
-     * @return two-letter iso language code
+     * @return two-letter iso language code (e.g. en)
      * @since Twitter4J 3.0.6
      */
     String getLang();
@@ -202,4 +210,28 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 3.0.6
      */
     Scopes getScopes();
+
+    /**
+     *  Returns the list of country codes where the tweet is withheld
+     *
+     *  @return list of country codes where the tweet is withheld - null if not withheld
+     *  @since Twitter4j 4.0.3
+     */
+    String[] getWithheldInCountries();
+
+    /**
+     * Returns the Tweet ID of the quoted Tweet
+     *
+     * @return the Tweet ID of the quoted Tweet
+     * @since Twitter4J 4.0.4
+     */
+    long getQuotedStatusId();
+
+    /**
+     * Returns the Tweet object of the original Tweet that was quoted.
+     *
+     * @return the quoted Tweet object
+     * @since Twitter4J 4.0.4
+     */
+    Status getQuotedStatus();
 }

@@ -17,12 +17,14 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
+import twitter4j.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
 import static twitter4j.HttpResponseCode.FORBIDDEN;
 import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
 
@@ -56,7 +58,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         stallWarningsGetParam = "stall_warnings=" + (conf.isStallWarningsEnabled() ? "true" : "false");
         stallWarningsParam = new HttpParameter("stall_warnings", conf.isStallWarningsEnabled());
     }
-
+    
     /* Streaming API */
 
     @Override
@@ -167,6 +169,18 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         });
     }
 
+    @Override
+    public void sample(final String language) {
+        ensureAuthorizationEnabled();
+        ensureStatusStreamListenerIsSet();
+        startHandler(new TwitterStreamConsumer(Mode.status) {
+            @Override
+            public StatusStream getStream() throws TwitterException {
+                return getSampleStream(language);
+            }
+        });
+    }
+
     /**
      * Returns a stream of random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
      *
@@ -186,6 +200,28 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
+    /**
+     * Returns a stream of random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     * <p>
+     * Only returns tweets in the given languages
+     *
+     * @return StatusStream
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
+     * @since Twitter4J 2.0.10
+     */
+    StatusStream getSampleStream(String language) throws TwitterException {
+        ensureAuthorizationEnabled();
+        try {
+            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
+                    + stallWarningsGetParam + "&language=" + language, null, auth, null), conf);
+        } catch (IOException e) {
+            throw new TwitterException(e);
+        }
+    }
+
+    @Override
     public void user() {
         user(null);
     }
@@ -265,7 +301,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return TwitterStreamImpl.dispatcher;
     }
 
-    private static transient Dispatcher dispatcher;
+    private static transient volatile Dispatcher dispatcher;
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
@@ -287,6 +323,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getFilterStream(query);
             }
         });
+    }
+
+    @Override
+    public void filter(final String... track) {
+        filter(new FilterQuery().track(track));
     }
 
     /**
@@ -374,6 +415,30 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
+    public synchronized TwitterStream onStatus(final Consumer<Status> action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onStatus(Status status) {
+                action.accept(status);
+            }
+        });
+        updateListeners();
+        return this;
+    }
+
+    @Override
+    public synchronized TwitterStream onException(final Consumer<Exception> action) {
+        streamListeners.add(new StatusAdapter() {
+            @Override
+            public void onException(Exception ex) {
+                action.accept(ex);
+            }
+        });
+        updateListeners();
+        return this;
+    }
+
+    @Override
     public synchronized void removeListener(StreamListener listener) {
         streamListeners.remove(listener);
         updateListeners();
@@ -450,7 +515,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     abstract class TwitterStreamConsumer extends Thread {
         private StatusStreamBase stream = null;
-        private final String NAME = "Twitter Stream consumer-" + (++count);
+        private final String NAME;
         private volatile boolean closed = false;
         private StreamListener[] streamListeners;
         private RawStreamListener[] rawStreamListeners;
@@ -459,6 +524,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         TwitterStreamConsumer(Mode mode) {
             super();
             this.mode = mode;
+            NAME = format("Twitter Stream consumer / %s [%s]", conf.getStreamThreadName(), ++count);
             updateListeners();
             setName(NAME + "[initializing]");
         }
@@ -510,7 +576,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                                 stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                 throw e;
                             } catch (Exception e) {
-                                if (!(e instanceof NullPointerException) && !e.getMessage().equals("Inflater has been closed")) {
+                                if (!(e instanceof NullPointerException) && !"Inflater has been closed".equals(e.getMessage())) {
                                     logger.info(e.getMessage());
                                     stream.onException(e, this.streamListeners, this.rawStreamListeners);
                                     closed = true;
@@ -613,9 +679,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         public synchronized void close() {
             setStatus("[Disposing thread]");
+            closed = true;
             if (stream != null) {
                 try {
-                    closed = true;
                     stream.close();
                 } catch (IOException ignore) {
                 } catch (Exception e) {

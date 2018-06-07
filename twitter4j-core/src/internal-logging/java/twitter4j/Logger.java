@@ -68,7 +68,7 @@ public abstract class Logger {
         LOGGER_FACTORY = loggerFactory;
 
         try {
-            Method method = conf.getClass().getMethod("dumpConfiguration", new Class[]{});
+            Method method = conf.getClass().getMethod("dumpConfiguration");
             method.setAccessible(true);
             method.invoke(conf);
         } catch (IllegalAccessException ignore) {
@@ -98,7 +98,7 @@ public abstract class Logger {
      * @param clazz class
      * @return logger instance
      */
-    public static Logger getLogger(Class clazz) {
+    public static Logger getLogger(Class<?> clazz) {
         return LOGGER_FACTORY.getLogger(clazz);
     }
 

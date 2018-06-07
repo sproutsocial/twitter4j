@@ -115,14 +115,14 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
 
             //twit4j: 6358482
             //twit4j2: 6377362
-            StreamController cs = twitterStream.site(true, new long[]{6377362, 4933401});
+            StreamController cs = twitterStream.site(true, 6377362, 4933401);
             //expecting onFriendList for twit4j and twit4j2
             waitForStatus("onFriendList");
 
             ControlStreamInfo info = cs.getInfo();
             assertEquals(2, info.getUsers().length);
 
-            cs.addUsers(new long[]{6358482L});
+            cs.addUsers(6358482L);
 
             waitForStatus("new User");
 
@@ -131,7 +131,7 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
             StreamController.FriendsIDs ids = cs.getFriendsIDs(4933401L, -1);
             assertTrue(ids.getIds().length > 100);
             assertEquals("yusuke", ids.getUser().getName());
-            cs.removeUsers(new long[]{4933401L});
+            cs.removeUsers(4933401L);
             waitForStatus("remove user");
 
             Status status = twit4j2.updateStatus("@twit4j " + new Date());
@@ -377,6 +377,20 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         notifyResponse();
     }
 
+    @Override
+    public void onUserDeletion(long forUser, long deletedUser) {
+        received.add(new Object[]{"user_delete", forUser, deletedUser});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(deletedUser));
+        notifyResponse();
+    }
+
+    @Override
+    public void onUserSuspension(long forUser, long suspendedUser) {
+        received.add(new Object[]{"user_suspend", forUser, suspendedUser});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(suspendedUser));
+        notifyResponse();
+    }
+
     public void onBlock(long forUser, User source, User blockedUser) {
         received.add(new Object[]{TwitterMethod.CREATE_BLOCK, forUser, source, blockedUser});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
@@ -388,6 +402,24 @@ public class SiteStreamsTest extends TwitterTestBase implements SiteStreamsListe
         received.add(new Object[]{TwitterMethod.DESTROY_BLOCK, forUser, source, unblockedUser});
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
         Assert.assertNotNull(TwitterObjectFactory.getRawJSON(unblockedUser));
+        notifyResponse();
+    }
+
+    @Override
+    public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+        received.add(new Object[]{"retweeted_retweet", source, target, retweetedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(retweetedStatus));
+        notifyResponse();
+    }
+
+    @Override
+    public void onFavoritedRetweet(User source, User target, Status favoritedStatus) {
+        received.add(new Object[]{"favorited_retweet", source, target, favoritedStatus});
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(source));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(target));
+        Assert.assertNotNull(TwitterObjectFactory.getRawJSON(favoritedStatus));
         notifyResponse();
     }
 

@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -30,6 +31,7 @@ import java.util.Date;
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
     private String name;
+    private String email;
     private String screenName;
     private String location;
     private String description;
@@ -38,6 +40,7 @@ import java.util.Date;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
+    private boolean isDefaultProfileImage;
     private String url;
     private boolean isProtected;
     private int followersCount;
@@ -50,6 +53,7 @@ import java.util.Date;
     private String profileSidebarFillColor;
     private String profileSidebarBorderColor;
     private boolean profileUseBackgroundImage;
+    private boolean isDefaultProfile;
     private boolean showAllInlineMedia;
     private int friendsCount;
     private Date createdAt;
@@ -67,6 +71,7 @@ import java.util.Date;
     private boolean translator;
     private int listedCount;
     private boolean isFollowRequestSent;
+    private String[] withheldInCountries;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -94,16 +99,16 @@ import java.util.Date;
         try {
             id = ParseUtil.getLong("id", json);
             name = ParseUtil.getRawString("name", json);
+            email = ParseUtil.getRawString("email", json);
             screenName = ParseUtil.getRawString("screen_name", json);
             location = ParseUtil.getRawString("location", json);
 
             // descriptionUrlEntities <=> entities/descriptions/urls[]
             descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
-            descriptionURLEntities = descriptionURLEntities == null ? new URLEntity[0] : descriptionURLEntities;
 
             // urlEntity <=> entities/url/urls[]
             URLEntity[] urlEntities = getURLEntitiesFromJSON(json, "url");
-            if (urlEntities != null && urlEntities.length > 0) {
+            if (urlEntities.length > 0) {
                 urlEntity = urlEntities[0];
             }
 
@@ -116,6 +121,7 @@ import java.util.Date;
             isContributorsEnabled = ParseUtil.getBoolean("contributors_enabled", json);
             profileImageUrl = ParseUtil.getRawString("profile_image_url", json);
             profileImageUrlHttps = ParseUtil.getRawString("profile_image_url_https", json);
+            isDefaultProfileImage = ParseUtil.getBoolean("default_profile_image", json);
             url = ParseUtil.getRawString("url", json);
             isProtected = ParseUtil.getBoolean("protected", json);
             isGeoEnabled = ParseUtil.getBoolean("geo_enabled", json);
@@ -129,6 +135,7 @@ import java.util.Date;
             profileSidebarFillColor = ParseUtil.getRawString("profile_sidebar_fill_color", json);
             profileSidebarBorderColor = ParseUtil.getRawString("profile_sidebar_border_color", json);
             profileUseBackgroundImage = ParseUtil.getBoolean("profile_use_background_image", json);
+            isDefaultProfile = ParseUtil.getBoolean("default_profile", json);
             showAllInlineMedia = ParseUtil.getBoolean("show_all_inline_media", json);
             friendsCount = ParseUtil.getInt("friends_count", json);
             createdAt = ParseUtil.getDate("created_at", json, "EEE MMM dd HH:mm:ss z yyyy");
@@ -146,6 +153,14 @@ import java.util.Date;
             if (!json.isNull("status")) {
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
+            }
+            if (!json.isNull("withheld_in_countries")) {
+                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
+                int length = withheld_in_countries.length();
+                withheldInCountries = new String[length];
+                for (int i = 0 ; i < length; i ++) {
+                    withheldInCountries[i] = withheld_in_countries.getString(i);
+                }
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -178,7 +193,7 @@ import java.util.Date;
                 }
             }
         }
-        return null;
+        return new URLEntity[0];
     }
 
     @Override
@@ -194,6 +209,11 @@ import java.util.Date;
     @Override
     public String getName() {
         return name;
+    }
+    
+    @Override
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -271,6 +291,14 @@ import java.util.Date;
     }
 
     @Override
+    public boolean isDefaultProfileImage() {
+        return isDefaultProfileImage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getURL() {
         return url;
     }
@@ -315,6 +343,14 @@ import java.util.Date;
         return profileUseBackgroundImage;
     }
 
+    @Override
+    public boolean isDefaultProfile() {
+        return isDefaultProfile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isShowAllInlineMedia() {
         return showAllInlineMedia;
@@ -445,6 +481,11 @@ import java.util.Date;
         return urlEntity;
     }
 
+    @Override
+    public String[] getWithheldInCountries() {
+        return withheldInCountries;
+    }
+
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -525,12 +566,14 @@ import java.util.Date;
         return "UserJSONImpl{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", isContributorsEnabled=" + isContributorsEnabled +
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", profileImageUrlHttps='" + profileImageUrlHttps + '\'' +
+                ", isDefaultProfileImage=" + isDefaultProfileImage +
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
@@ -541,6 +584,7 @@ import java.util.Date;
                 ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
                 ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
                 ", profileUseBackgroundImage=" + profileUseBackgroundImage +
+                ", isDefaultProfile=" + isDefaultProfile +
                 ", showAllInlineMedia=" + showAllInlineMedia +
                 ", friendsCount=" + friendsCount +
                 ", createdAt=" + createdAt +
@@ -557,6 +601,7 @@ import java.util.Date;
                 ", translator=" + translator +
                 ", listedCount=" + listedCount +
                 ", isFollowRequestSent=" + isFollowRequestSent +
+                ", withheldInCountries=" + Arrays.toString(withheldInCountries) +
                 '}';
     }
 

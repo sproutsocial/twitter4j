@@ -20,11 +20,11 @@ package twitter4j;
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
-public final class VersionSPDY {
-    private static final String VERSION = "4.0.2-SNAPSHOT";
-    private static final String TITLE = "Twitter4J SPDY Support";
+public final class VersionHTTP2 {
+    private static final String VERSION = "4.0.6";
+    private static final String TITLE = "Twitter4J HTTP/2 Support";
 
-    private VersionSPDY() {
+    private VersionHTTP2() {
         throw new AssertionError();
     }
 

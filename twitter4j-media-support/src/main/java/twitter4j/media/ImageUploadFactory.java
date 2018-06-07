@@ -42,6 +42,7 @@ public class ImageUploadFactory {
 
     /**
      * Creates an ImageUploadFactory with the specified configuration
+     * @param conf configuration to be associated
      */
     public ImageUploadFactory(Configuration conf) {
         String mediaProvider = conf.getMediaProvider().toLowerCase();
@@ -51,10 +52,6 @@ public class ImageUploadFactory {
             defaultMediaProvider = IMG_LY;
         } else if ("twipple".equals(mediaProvider)) {
             defaultMediaProvider = TWIPPLE;
-        } else if ("twitpic".equals(mediaProvider)) {
-            defaultMediaProvider = TWITPIC;
-        } else if ("yfrog".equals(mediaProvider)) {
-            defaultMediaProvider = YFROG;
         } else if ("mobypicture".equals(mediaProvider)) {
             defaultMediaProvider = MOBYPICTURE;
         } else {
@@ -114,10 +111,6 @@ public class ImageUploadFactory {
             return new ImgLyUpload(conf, oauth);
         } else if (mediaProvider == TWIPPLE) {
             return new TwippleUpload(conf, oauth);
-        } else if (mediaProvider == TWITPIC) {
-            return new TwitpicUpload(conf, apiKey, oauth);
-        } else if (mediaProvider == YFROG) {
-            return new YFrogUpload(conf, oauth);
         } else if (mediaProvider == MOBYPICTURE) {
             return new MobypictureUpload(conf, apiKey, oauth);
         } else {

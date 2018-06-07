@@ -27,6 +27,7 @@ public enum TwitterMethod {
     HOME_TIMELINE,
     RETWEETS_OF_ME,
 
+
     /* Tweets Resources */
     RETWEETS,
     SHOW_STATUS,
@@ -34,6 +35,7 @@ public enum TwitterMethod {
     UPDATE_STATUS,
     RETWEET_STATUS,
     OEMBED,
+    LOOKUP,
 
     /* Search Resources */
     SEARCH,
@@ -71,6 +73,10 @@ public enum TwitterMethod {
     BLOCK_LIST_IDS,
     CREATE_BLOCK,
     DESTROY_BLOCK,
+    MUTE_LIST,
+    MUTE_LIST_IDS,
+    CREATE_MUTE,
+    DESTROY_MUTE,
 
     SHOW_USER,
     LOOKUP_USERS,

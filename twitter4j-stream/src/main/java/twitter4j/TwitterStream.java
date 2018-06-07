@@ -16,6 +16,7 @@
 package twitter4j;
 
 import twitter4j.auth.OAuthSupport;
+import twitter4j.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -37,6 +38,20 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     void addListener(StreamListener listener);
 
     /**
+     * @param action action when receiving Status
+     * @return this instance
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onStatus(Consumer<Status> action);
+
+    /**
+     * @param action action when receiving TwitterException
+     * @return this instance
+     * @since Twitter4J 4.0.4
+     */
+    TwitterStream onException(Consumer<Exception> action);
+
+    /**
      * @param listener listener to remove
      * @since Twitter4J 4.0.0
      */
@@ -52,6 +67,8 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     /**
      * replace existing listener
      *
+     * @param toBeRemoved listener to be removed
+     * @param toBeAdded   listener to be added
      * @since Twitter4J 4.0.0
      */
     void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded);
@@ -95,6 +112,18 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     void sample();
 
     /**
+     * Starts listening on random sample of all public statuses. The default access level provides a small proportion of the Firehose. The "Gardenhose" access level provides a proportion more suitable for data mining and research applications that desire a larger proportion to be statistically significant sample.
+     * <p>
+     * Only samples Tweets written in the given language.
+     *
+     * @param language language to be sampled
+     * @see twitter4j.StatusStream
+     * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
+     * @since Twitter4J 2.0.10
+     */
+    void sample(final String language);
+
+    /**
      * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
      *
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
@@ -110,7 +139,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      * @since Twitter4J 2.1.9
      */
-    void user(final String[] track);
+    void user(final String... track);
 
 
     /**
@@ -121,10 +150,11 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @param withFollowings whether to receive status updates from people following
      * @param follow         an array of users to include in the stream
+     * @return controller to control the site stream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
      * @since Twitter4J 2.1.8
      */
-    StreamController site(final boolean withFollowings, final long[] follow);
+    StreamController site(final boolean withFollowings, final long... follow);
 
     /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
@@ -136,6 +166,15 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @since Twitter4J 2.1.2
      */
     void filter(final FilterQuery query);
+
+    /**
+     * Start consuming public statuses that match the filter predicate. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
+     * The default access level allows up to 200 track keywords.
+     *
+     * @param track words to be filtered
+     * @since Twitter4J 4.0.4
+     */
+    void filter(final String... track);
 
     /**
      * shutdown internal stream consuming thread

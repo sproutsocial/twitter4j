@@ -245,7 +245,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    void createUserListMembers(long listId, long[] userIds);
+    void createUserListMembers(long listId, long... userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -257,7 +257,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void createUserListMembers(long ownerId, String slug, long[] userIds);
+    void createUserListMembers(long ownerId, String slug, long... userIds);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -268,7 +268,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    void createUserListMembers(long listId, String[] screenNames);
+    void createUserListMembers(long listId, String... screenNames);
 
     /**
      * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
@@ -280,7 +280,7 @@ public interface ListsResourcesAsync {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    void createUserListMembers(long ownerId, String slug, String[] screenNames);
+    void createUserListMembers(long ownerId, String slug, String... screenNames);
 
     /**
      * Check if a user is a member of the specified list.<br>
@@ -381,7 +381,7 @@ public interface ListsResourcesAsync {
      * @param newListName    What you'd like to change the list's name to.
      * @param isPublicList   Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
      * @param newDescription What you'd like to change the list description to.
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void updateUserList(long listId, String newListName, boolean isPublicList, String newDescription);
@@ -395,7 +395,7 @@ public interface ListsResourcesAsync {
      * @param newListName    What you'd like to change the list's name to.
      * @param isPublicList   Whether your list is public or private. Optional. Values can be public or private. Lists are public by default if no mode is specified.
      * @param newDescription What you'd like to change the list description to.
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     void updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription);
@@ -407,7 +407,7 @@ public interface ListsResourcesAsync {
      * @param listName     The name of the list you are creating. Required.
      * @param isPublicList set true if you wish to make a public list
      * @param description  The description of the list you are creating. Optional.
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create ">POST lists/create | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create">POST lists/create | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
     void createUserList(String listName, boolean isPublicList, String description);

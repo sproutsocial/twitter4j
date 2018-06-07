@@ -78,6 +78,7 @@ abstract class StatusStreamBase implements StatusStream {
                 throw new IOException("the end of the stream has been reached");
             }
             dispatcher.invokeLater(new StreamEvent(line) {
+                @Override
                 public void run() {
                     try {
                         if (rawStreamListeners.length > 0) {
@@ -157,11 +158,26 @@ abstract class StatusStreamBase implements StatusStream {
                                     case USER_UPDATE:
                                         onUserUpdate(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
                                         break;
+                                    case USER_DELETE:
+                                        onUserDeletion(json.getLong("target"), listeners);
+                                        break;
+                                    case USER_SUSPEND:
+                                        onUserSuspension(json.getLong("target"), listeners);
+                                        break;
                                     case BLOCK:
                                         onBlock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
                                         break;
                                     case UNBLOCK:
                                         onUnblock(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case RETWEETED_RETWEET:
+                                        onRetweetedRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case FAVORITED_RETWEET:
+                                        onFavoritedRetweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
+                                        break;
+                                    case QUOTED_TWEET:
+                                        onQuotedTweet(json.getJSONObject("source"), json.getJSONObject("target"), json.getJSONObject("target_object"), listeners);
                                         break;
                                     case DISCONNECTION:
                                         onDisconnectionNotice(line, listeners);
@@ -185,6 +201,7 @@ abstract class StatusStreamBase implements StatusStream {
             }
             boolean isUnexpectedException = streamAlive;
             streamAlive = false;
+            onClose();
             if (isUnexpectedException) {
                 throw new TwitterException("Stream closed.", ioe);
             }
@@ -275,12 +292,31 @@ abstract class StatusStreamBase implements StatusStream {
         logger.warn("Unhandled event: onUserUpdate");
     }
 
+    void onUserDeletion(long target, StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onUserDeletion");
+    }
+
+    void onUserSuspension(long target, StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onUserSuspension");
+    }
+
     void onBlock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onBlock");
     }
 
     void onUnblock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onUnblock");
+    }
+
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onRetweetedRetweet");
+    }
+    void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onFavoritedRetweet");
+    }
+
+    void onQuotedTweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onQuotedTweet");
     }
 
     void onDisconnectionNotice(String line, StreamListener[] listeners) {
@@ -291,6 +327,9 @@ abstract class StatusStreamBase implements StatusStream {
         logger.warn("Unhandled event: ", e.getMessage());
     }
 
+    protected abstract void onClose();
+
+    @Override
     public void close() throws IOException {
         streamAlive = false;
         is.close();
@@ -298,6 +337,7 @@ abstract class StatusStreamBase implements StatusStream {
         if (response != null) {
             response.disconnect();
         }
+        onClose();
     }
 
     Status asStatus(JSONObject json) throws TwitterException {
@@ -352,6 +392,7 @@ abstract class StatusStreamBase implements StatusStream {
         return userList;
     }
 
+    @Override
     public abstract void next(StatusListener listener) throws TwitterException;
 
     public abstract void next(StreamListener[] listeners, RawStreamListener[] rawStreamListeners) throws TwitterException;

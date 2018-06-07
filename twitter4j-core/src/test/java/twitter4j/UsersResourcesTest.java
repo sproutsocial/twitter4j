@@ -24,6 +24,8 @@ import java.util.Date;
  * @since Twitter4J 2.2.4
  */
 public class UsersResourcesTest extends TwitterTestBase {
+    private long twit4jblockID = 39771963L;
+
     public UsersResourcesTest(String name) {
         super(name);
     }
@@ -83,6 +85,7 @@ public class UsersResourcesTest extends TwitterTestBase {
 
         assertTrue(1 <= user.getListedCount());
         assertFalse(user.isFollowRequestSent());
+        assertEquals(user, twitter1.showUser("@yusuke"));
 
         //test case for TFJ-91 null pointer exception getting user detail on users with no statuses
         //http://yusuke.homeip.net/jira/browse/TFJ-91
@@ -106,12 +109,12 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
     public void testLookupUsers() throws TwitterException {
-        ResponseList<User> users = twitter1.lookupUsers(new String[]{id1.screenName, id2.screenName});
+        ResponseList<User> users = twitter1.lookupUsers(id1.screenName, id2.screenName);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
 
-        users = twitter1.lookupUsers(new long[]{id1.id, id2.id});
+        users = twitter1.lookupUsers(id1.id, id2.id);
         assertEquals(2, users.size());
         assertContains(users, id1);
         assertContains(users, id2);
@@ -179,28 +182,7 @@ public class UsersResourcesTest extends TwitterTestBase {
         assertEquals(newURL, altered.getURL().toString());
         assertEquals(newLocation, altered.getLocation());
         assertEquals(newDescription, altered.getDescription());
-
-        User eu;
-        eu = twitter1.updateProfileColors("f00", "f0f", "0ff", "0f0", "f0f");
-        assertNotNull(TwitterObjectFactory.getRawJSON(eu));
-        assertEquals(eu, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(eu)));
-        assertEquals("FF0000", eu.getProfileBackgroundColor());
-        assertEquals("FF00FF", eu.getProfileTextColor());
-        assertEquals("00FFFF", eu.getProfileLinkColor());
-        assertEquals("00FF00", eu.getProfileSidebarFillColor());
-        assertEquals("FF00FF", eu.getProfileSidebarBorderColor());
-        assertFalse(eu.isProfileUseBackgroundImage());
-        assertFalse(eu.isShowAllInlineMedia());
-        assertTrue(0 <= eu.getListedCount());
-        eu = twitter1.updateProfileColors("87bc44", "9ae4e8", "000000", "0000ff", "e0ff92");
-        assertNotNull(TwitterObjectFactory.getRawJSON(eu));
-        assertEquals(eu, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(eu)));
-        assertEquals("87BC44", eu.getProfileBackgroundColor());
-        assertEquals("9AE4E8", eu.getProfileTextColor());
-        assertEquals("000000", eu.getProfileLinkColor());
-        assertEquals("0000FF", eu.getProfileSidebarFillColor());
-        assertEquals("E0FF92", eu.getProfileSidebarBorderColor());
-
+        
         AccountSettings settings = twitter1.getAccountSettings();
         assertTrue(settings.isSleepTimeEnabled());
         assertTrue(settings.isGeoEnabled());
@@ -277,19 +259,63 @@ public class UsersResourcesTest extends TwitterTestBase {
         User user2 = twitter2.destroyBlock(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
+        user1 = twitter2.createBlock("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        user2 = twitter2.destroyBlock("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+        assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
         PagableResponseList<User> users = twitter1.getBlocksList();
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
-        assertEquals(39771963, users.get(0).getId());
+        assertEquals(twit4jblockID, users.get(0).getId());
 
         IDs ids = twitter1.getBlocksIDs();
         assertNull(TwitterObjectFactory.getRawJSON(users));
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertEquals(1, ids.getIDs().length);
-        assertEquals(39771963, ids.getIDs()[0]);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
 
         ids = twitter1.getBlocksIDs(-1);
         assertTrue(ids.getIDs().length > 0);
+    }
+
+    public void testMuteMethods() throws Exception {
+        User user1 = twitter2.createMute(id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        User user2 = twitter2.destroyMute(id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+        assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+
+        user1 = twitter2.createMute("@"+id1.screenName);
+        assertNotNull(TwitterObjectFactory.getRawJSON(user1));
+        assertEquals(user1, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user1)));
+        try {
+            user2 = twitter2.destroyMute("@"+id1.screenName);
+//            assertNotNull(TwitterObjectFactory.getRawJSON(user2));
+//            assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
+        } catch (TwitterException e) {
+//          The request with '@'+screen_name could not make mute user.
+            assertEquals(e.getStatusCode(), 403);
+            assertEquals(e.getErrorCode(), 272);
+        }
+
+        twitter1.createMute(twit4jblockID);
+        PagableResponseList<User> users = twitter1.getMutesList(-1L);
+        assertNotNull(TwitterObjectFactory.getRawJSON(users));
+        assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
+        assertEquals(1, users.size());
+        assertEquals(twit4jblockID, users.get(0).getId());
+
+        IDs ids = twitter1.getMutesIDs(-1L);
+        assertNull(TwitterObjectFactory.getRawJSON(users));
+        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
+        assertEquals(1, ids.getIDs().length);
+        assertEquals(twit4jblockID, ids.getIDs()[0]);
+
     }
 }

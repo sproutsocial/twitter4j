@@ -42,9 +42,14 @@ public final class JSONObjectType {
         USER_LIST_UPDATED,
         USER_LIST_DESTROYED,
         USER_UPDATE,
+        USER_DELETE,
+        USER_SUSPEND,
         BLOCK,
         UNBLOCK,
         DISCONNECTION,
+        RETWEETED_RETWEET,
+        FAVORITED_RETWEET,
+        QUOTED_TWEET,
         UNKNOWN
     }
 
@@ -111,11 +116,22 @@ public final class JSONObjectType {
                     }
                 } else if ("user_update".equals(event)) {
                     return Type.USER_UPDATE;
+                } else if ("user_delete".equals(event)) {
+                    return Type.USER_DELETE;
+                } else if ("user_suspend".equals(event)) {
+                    return Type.USER_SUSPEND;
                 } else if ("block".equals(event)) {
                     return Type.BLOCK;
                 } else if ("unblock".equals(event)) {
                     return Type.UNBLOCK;
+                } else if("retweeted_retweet".equals(event)){
+                    return Type.RETWEETED_RETWEET;
+                } else if("favorited_retweet".equals(event)){
+                    return Type.FAVORITED_RETWEET;
+                } else if("quoted_tweet".equals(event)){
+                    return Type.QUOTED_TWEET;
                 }
+
             } catch (JSONException jsone) {
                 try {
                     logger.warn("Failed to get event element: ", json.toString(2));

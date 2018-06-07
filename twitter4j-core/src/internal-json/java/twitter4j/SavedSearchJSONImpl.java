@@ -28,12 +28,12 @@ import java.util.Date;
  */
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
-    private static final long serialVersionUID = 846086437256360810L;
+    private static final long serialVersionUID = -2281949861485441692L;
     private Date createdAt;
     private String query;
     private int position;
     private String name;
-    private int id;
+    private long id;
 
     /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -82,12 +82,12 @@ import java.util.Date;
         query = ParseUtil.getUnescapedString("query", savedSearch);
         position = ParseUtil.getInt("position", savedSearch);
         name = ParseUtil.getUnescapedString("name", savedSearch);
-        id = ParseUtil.getInt("id", savedSearch);
+        id = ParseUtil.getLong("id", savedSearch);
     }
 
     @Override
     public int compareTo(SavedSearch that) {
-        return this.id - that.getId();
+        return (int)(this.id - that.getId());
     }
 
     @Override
@@ -111,7 +111,7 @@ import java.util.Date;
     }
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -133,7 +133,7 @@ import java.util.Date;
         result = 31 * result + query.hashCode();
         result = 31 * result + position;
         result = 31 * result + name.hashCode();
-        result = 31 * result + id;
+        result = 31 * result + (int)id;
         return result;
     }
 

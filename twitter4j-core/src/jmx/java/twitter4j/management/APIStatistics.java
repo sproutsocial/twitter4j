@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Container for all InvocationStatisticsCalculators in a given API (like Twitter)
  *
- * @author Nick Dellamaggiore (nick.dellamaggiore <at> gmail.com)
+ * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public class APIStatistics implements APIStatisticsMBean {
     private final InvocationStatisticsCalculator API_STATS_CALCULATOR;
@@ -39,8 +39,9 @@ public class APIStatistics implements APIStatisticsMBean {
     }
 
     /**
-     * @param method the method invoked
-     * @param time   the method execution time
+     * @param method   the method invoked
+     * @param time     the method execution time
+     * @param success success
      */
     public synchronized void methodCalled(String method, long time, boolean success) {
         getMethodStatistics(method).increment(time, success);
@@ -64,6 +65,7 @@ public class APIStatistics implements APIStatisticsMBean {
         return METHOD_STATS_MAP.values();
     }
 
+    @Override
     public synchronized void reset() {
         API_STATS_CALCULATOR.reset();
         METHOD_STATS_MAP.clear();
@@ -73,22 +75,27 @@ public class APIStatistics implements APIStatisticsMBean {
      * APIStatisticsMBean implementation
      */
 
+    @Override
     public String getName() {
         return API_STATS_CALCULATOR.getName();
     }
 
+    @Override
     public long getCallCount() {
         return API_STATS_CALCULATOR.getCallCount();
     }
 
+    @Override
     public long getErrorCount() {
         return API_STATS_CALCULATOR.getErrorCount();
     }
 
+    @Override
     public long getTotalTime() {
         return API_STATS_CALCULATOR.getTotalTime();
     }
 
+    @Override
     public long getAverageTime() {
         return API_STATS_CALCULATOR.getAverageTime();
     }

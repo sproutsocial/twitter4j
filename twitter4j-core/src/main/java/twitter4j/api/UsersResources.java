@@ -82,7 +82,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.8
      */
     User updateProfile(String name, String url, String location, String description)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile background image.
@@ -98,7 +98,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.0
      */
     User updateProfileBackgroundImage(File image, boolean tile)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile background image.
@@ -114,7 +114,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.11
      */
     User updateProfileBackgroundImage(InputStream image, boolean tile)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
@@ -129,9 +129,10 @@ public interface UsersResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
      * @since Twitter4J 2.0.0
+     * @deprecated Since Twitter4J 4.0.5
      */
     User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the authenticating user's profile image.
@@ -199,6 +200,7 @@ public interface UsersResources {
      * Returns an array of numeric user ids the authenticating user is blocking.
      * <br>This method calls https://api.twitter.com/1.1/blocks/ids
      *
+     * @param cursor cursor
      * @return Returns an array of numeric user ids the authenticating user is blocking.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/ids">GET blocks/ids | Twitter Developers</a>
@@ -255,16 +257,88 @@ public interface UsersResources {
     User destroyBlock(String screen_name) throws TwitterException;
 
     /**
+     * Returns a list of user objects that the authenticating user is muting.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/list
+     *
+     * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
+     * @return a list of user objects that the authenticating user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET blocks/blocking | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    PagableResponseList<User> getMutesList(long cursor) throws TwitterException;
+
+    /**
+     * Returns an array of numeric user ids the authenticating user is muting.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/ids
+     *
+     * @param cursor Causes the list of muted users to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
+     * @return Returns an array of numeric user ids the authenticating user is muting.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/ids">GET blocks/ids | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    IDs getMutesIDs(long cursor) throws TwitterException;
+
+    /**
+     * Mutes the user specified in the ID parameter as the authenticating user.  Returns the muted user in the requested format when successful.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
+     *
+     * @param userId the user_id of the user to mute
+     * @return the muted user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/create">POST mutes/users/create | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    User createMute(long userId) throws TwitterException;
+
+    /**
+     * Mutes the user specified in the screen name parameter as the authenticating user.  Returns the muted user in the requested format when successful.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/create
+     *
+     * @param screenName the screen_name of the user to mute
+     * @return the muted user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/create">POST mutes/users/create | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    User createMute(String screenName) throws TwitterException;
+
+    /**
+     * Un-mutes the user specified in the ID parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/destroy
+     *
+     * @param userId the ID of the user to mute
+     * @return the unmuted user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/destroy">POST mutes/users/destroy | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    User destroyMute(long userId) throws TwitterException;
+
+    /**
+     * Un-mutes the user specified in the screen name parameter as the authenticating user.  Returns the un-muted user in the requested format when successful.
+     * <br>This method calls https://api.twitter.com/1.1/mutes/users/destroy
+     *
+     * @param screenName the screen_name of the user to mute
+     * @return the unmuted user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/mutes/users/destroy">POST mutes/users/destroy | Twitter Developers</a>
+     * @since Twitter4J 4.0.2
+     */
+    User destroyMute(String screenName) throws TwitterException;
+
+    /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
      * <br>This method calls https://api.twitter.com/1.1/users/lookup.json
      *
-     * @param ids Specifies the screen names of the users to return.
+     * @param ids Specifies the IDs of the users to return.
      * @return users
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    ResponseList<User> lookupUsers(long[] ids) throws TwitterException;
+    ResponseList<User> lookupUsers(long... ids) throws TwitterException;
 
     /**
      * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two. The author's most recent status (if the authenticating user has permission) will be returned inline.
@@ -276,7 +350,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/users/lookup">GET users/lookup | Twitter Developers</a>
      * @since Twitter4J 2.1.1
      */
-    ResponseList<User> lookupUsers(String[] screenNames) throws TwitterException;
+    ResponseList<User> lookupUsers(String... screenNames) throws TwitterException;
 
     /**
      * Returns extended information of a given user, specified by ID or screen name as per the required id parameter. The author's most recent status will be returned inline.
@@ -364,15 +438,16 @@ public interface UsersResources {
      *
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/remove_profile_banner">POST account/remove_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
+     * @throws TwitterException when Twitter service or network is unavailable
      */
     void removeProfileBanner() throws TwitterException;
 
     /**
-     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an &lt;5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)
@@ -382,11 +457,11 @@ public interface UsersResources {
     void updateProfileBanner(File image) throws TwitterException;
 
     /**
-     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an <5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
+     * Uploads a profile banner on behalf of the authenticating user. For best results, upload an &lt;5MB image that is exactly 1252px by 626px. Images will be resized for a number of display options. Users with an uploaded profile banner will have a profile_banner_url node in their <a href="https://dev.twitter.com/docs/platform-objects/users">Users</a> objects. More information about sizing variations can be found in <a href="https://dev.twitter.com/docs/user-profile-images-and-banners">User Profile Images and Banners</a>.<br>
      * Profile banner images are processed asynchronously. The profile_banner_url and its variant sizes will not necessary be available directly after upload.<br>
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_banner.json
      *
-     * @param image For best results, upload an <5MB image that is exactly 1252px by 626px.
+     * @param image For best results, upload an &lt;5MB image that is exactly 1252px by 626px.
      * @throws TwitterException when Twitter service or network is unavailable,
      *                          or when the specified file is not found (FileNotFoundException will be nested),
      *                          or when the specified file object in not representing a file (IOException will be nested)

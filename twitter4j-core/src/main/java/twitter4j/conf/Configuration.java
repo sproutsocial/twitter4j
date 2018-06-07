@@ -30,8 +30,10 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isApplicationOnlyAuthEnabled();
 
+    @Override
     String getUser();
 
+    @Override
     String getPassword();
 
     // methods for HttpClientConfiguration
@@ -41,19 +43,29 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     // oauth related setter/getters
 
+    @Override
     String getOAuthConsumerKey();
 
+    @Override
     String getOAuthConsumerSecret();
 
+    @Override
     String getOAuthAccessToken();
 
+    @Override
     String getOAuthAccessTokenSecret();
 
+    @Override
     String getOAuth2TokenType();
 
+    @Override
     String getOAuth2AccessToken();
 
+    String getOAuth2Scope();
+
     String getRestBaseURL();
+
+    String getUploadBaseURL();
 
     String getStreamBaseURL();
 
@@ -103,5 +115,13 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isTrimUserEnabled();
 
+    boolean isIncludeExtAltTextEnabled();
+
+    boolean isTweetModeExtended();
+
     boolean isDaemonEnabled();
+
+    boolean isIncludeEmailEnabled();
+
+    String getStreamThreadName();
 }

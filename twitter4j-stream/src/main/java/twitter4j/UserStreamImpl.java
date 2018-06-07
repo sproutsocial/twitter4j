@@ -154,6 +154,20 @@ final class UserStreamImpl extends StatusStreamImpl implements UserStream {
     }
 
     @Override
+    protected void onUserSuspension(long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserSuspension(target);
+        }
+    }
+
+    @Override
+    protected void onUserDeletion(long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onUserDeletion(target);
+        }
+    }
+
+    @Override
     protected void onBlock(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((UserStreamListener) listener).onBlock(asUser(source), asUser(target));
@@ -167,4 +181,24 @@ final class UserStreamImpl extends StatusStreamImpl implements UserStream {
         }
     }
 
+    @Override
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
+
+    @Override
+    void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onFavoritedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
+
+    @Override
+    protected void onQuotedTweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((UserStreamListener) listener).onQuotedTweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
 }

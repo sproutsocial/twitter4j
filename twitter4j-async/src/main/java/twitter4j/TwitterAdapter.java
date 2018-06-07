@@ -74,6 +74,10 @@ public class TwitterAdapter implements TwitterListener {
     public void gotOEmbed(OEmbed oembed) {
     }
 
+    @Override
+    public void lookedup(ResponseList<Status> statuses) {
+    }
+
     /* Search Resources */
     @Override
     public void searched(QueryResult queryResult) {
@@ -217,6 +221,22 @@ public class TwitterAdapter implements TwitterListener {
 
     @Override
     public void updatedProfileBanner() {
+    }
+
+    @Override
+    public void gotMutesList(ResponseList<User> blockingUsers) {
+    }
+
+    @Override
+    public void gotMuteIDs(IDs blockingUsersIDs) {
+    }
+
+    @Override
+    public void createdMute(User user) {
+    }
+
+    @Override
+    public void destroyedMute(User user) {
     }
 
     /* Suggested Users Resources */

@@ -39,6 +39,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
         this.cs = cs;
     }
 
+    @Override
     protected String parseLine(String line) {
         if ("".equals(line) || null == line) {
             return line;
@@ -73,6 +74,11 @@ final class SiteStreamsImpl extends StatusStreamBase {
             forUser.set(Long.parseLong(line.substring(12, userIdEnd)));
         }
         return line.substring(userIdEnd + 11, line.length() - 1);
+    }
+
+    @Override
+    protected void onClose() {
+        cs.setControlURI(null);
     }
 
     private static final ThreadLocal<Long> forUser =
@@ -220,6 +226,20 @@ final class SiteStreamsImpl extends StatusStreamBase {
     }
 
     @Override
+    protected void onUserSuspension(final long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onUserSuspension(forUser.get(), target);
+        }
+    }
+
+    @Override
+    protected void onUserDeletion(final long target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onUserDeletion(forUser.get(), target);
+        }
+    }
+
+    @Override
     protected void onBlock(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((SiteStreamsListener) listener).onBlock(forUser.get(), asUser(source), asUser(target));
@@ -230,6 +250,20 @@ final class SiteStreamsImpl extends StatusStreamBase {
     protected void onUnblock(final JSONObject source, final JSONObject target, StreamListener[] listeners) throws TwitterException {
         for (StreamListener listener : listeners) {
             ((SiteStreamsListener) listener).onUnblock(forUser.get(), asUser(source), asUser(target));
+        }
+    }
+
+    @Override
+    void onRetweetedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onRetweetedRetweet(asUser(source), asUser(target), asStatus(targetObject));
+        }
+    }
+
+    @Override
+    void onFavoritedRetweet(JSONObject source, JSONObject target, JSONObject targetObject, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onFavoritedRetweet(asUser(source), asUser(target), asStatus(targetObject));
         }
     }
 

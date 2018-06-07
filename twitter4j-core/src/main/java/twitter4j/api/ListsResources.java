@@ -34,7 +34,22 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
+     *
+     * @param listOwnerScreenName The screen name of the list owner
+     *                            as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param reverse             Set this to true if you would like owned lists to be returned first
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    ResponseList<UserList> getUserLists(String listOwnerScreenName, boolean reverse)
+        throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -47,8 +62,21 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId)
-            throws TwitterException;
+        throws TwitterException;
 
+    /**
+     * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
+     * <br>This method calls https://api.twitter.com/1.1/lists.json
+     *
+     * @param listOwnerUserId The id of the list owner
+     * @param reverse         Set this to true if you would like owned lists to be returned first
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/list">GET lists/list | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    ResponseList<UserList> getUserLists(long listOwnerUserId, boolean reverse)
+        throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -62,7 +90,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<Status> getUserListStatuses(long listId, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -77,7 +105,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -92,7 +120,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug, Paging paging)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -200,7 +228,22 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists the authenticating user has been added to.
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
+     *
+     * @param count  The amount of results to return per page. No more than 1000 results will ever be returned in a single page.
+     * @param cursor Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException      when Twitter service or network is unavailable
+     * @throws IllegalStateException when authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(int count, long cursor)
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -214,7 +257,22 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
+     *
+     * @param listMemberId The id of the list member
+     * @param count        The amount of results to return per page. No more than 1000 results will ever be returned in a single page.
+     * @param cursor       Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor)
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -228,7 +286,22 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
+     *
+     * @param listMemberScreenName The screen name of the list member
+     * @param count                The amount of results to return per page. No more than 1000 results will ever be returned in a single page.
+     * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.1.0
+     */
+    PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor)
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -244,7 +317,24 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
+     *
+     * @param listMemberScreenName The screen name of the list member
+     * @param count                The amount of results to return per page. No more than 1000 results will ever be returned in a single page.
+     * @param cursor               Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param filterToOwnedLists   Whether to return just lists the authenticating user owns, and the user represented by listMemberScreenName is a member of.
+     * @return the list of lists
+     * @throws TwitterException      when Twitter service or network is unavailable
+     * @throws IllegalStateException when filerToOwnedLists is true but authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor, boolean filterToOwnedLists)
+        throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -260,7 +350,24 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user has been added to.
+     * <br>This method calls https://api.twitter.com/1.1/lists/memberships.json
+     *
+     * @param listMemberId       The id of the list member
+     * @param count              The amount of results to return per page. No more than 1000 results will ever be returned in a single page.
+     * @param cursor             Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param filterToOwnedLists Whether to return just lists the authenticating user owns, and the user represented by listMemberId is a member of.
+     * @return the list of lists
+     * @throws TwitterException      when Twitter service or network is unavailable
+     * @throws IllegalStateException when filerToOwnedLists is true but authorization is not enabled
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/memberships">GET lists/memberships | Twitter Developers</a>
+     * @since Twitter4J 2.2.4
+     */
+    PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor, boolean filterToOwnedLists)
+        throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -274,6 +381,35 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<User> getUserListSubscribers(long listId, long cursor) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param listId The id of the list
+     * @param count  Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param listId     The id of the list
+     * @param count      Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor     Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -293,6 +429,37 @@ public interface ListsResources {
      * Returns the subscribers of the specified list.
      * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
      *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @param count   Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor  Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param ownerId    The user ID of the user who owns the list being requested by a slug.
+     * @param slug       slug of the list
+     * @param count      Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor     Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
      * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
@@ -302,6 +469,37 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, long cursor) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param count           Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor) throws TwitterException;
+
+    /**
+     * Returns the subscribers of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscribers.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param count           Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws twitter4j.TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscribers">GET lists/subscribers | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor, boolean skipStatus) throws TwitterException;
 
     /**
      * Make the authenticated user follow the specified list.
@@ -424,77 +622,86 @@ public interface ListsResources {
     UserList destroyUserListSubscription(String ownerScreenName, String slug) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId  The id of the list.
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long listId, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(long listId, long... userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
      * @param slug    slug of the list
      * @param userIds The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long ownerId, String slug, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(long ownerId, String slug, long... userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
      * @param userIds         The array of ids of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    UserList createUserListMembers(String ownerScreenName, String slug, long[] userIds) throws TwitterException;
+    UserList createUserListMembers(String ownerScreenName, String slug, long... userIds) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param listId      The id of the list.
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 2.1.7
      */
-    UserList createUserListMembers(long listId, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(long listId, String... screenNames) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerId     The user ID of the user who owns the list being requested by a slug.
      * @param slug        slug of the list
      * @param screenNames The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
-    UserList createUserListMembers(long ownerId, String slug, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(long ownerId, String slug, String... screenNames) throws TwitterException;
 
     /**
-     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members, and you are limited to adding up to 100 members to a list at a time with this method.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create_all.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
      * @param slug            slug of the list
      * @param screenNames     The array of screen names of the user to add as member of the list. up to 100 are allowed in a single request.
+     * @return the list
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/members/create_all">POST lists/members/create_all | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    UserList createUserListMembers(String ownerScreenName, String slug, String[] screenNames) throws TwitterException;
+    UserList createUserListMembers(String ownerScreenName, String slug, String... screenNames) throws TwitterException;
 
     /**
      * Check if a user is a member of the specified list.<br>
@@ -552,7 +759,38 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<User> getUserListMembers(long listId, long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param listId The id of the list
+     * @param count  Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(long listId, int count, long cursor)
+        throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param listId     The id of the list
+     * @param count      Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor     Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skipStatus)
+        throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -567,7 +805,40 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param ownerId The user ID of the user who owns the list being requested by a slug.
+     * @param slug    slug of the list
+     * @param count   Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor  Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor)
+        throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param ownerId    The user ID of the user who owns the list being requested by a slug.
+     * @param slug       slug of the list
+     * @param count      Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor     Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skipStatus)
+        throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -582,10 +853,43 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param count           Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor)
+        throws TwitterException;
+
+    /**
+     * Returns the members of the specified list.
+     * <br>This method calls https://api.twitter.com/1.1/lists/members.json
+     *
+     * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
+     * @param slug            slug of the list
+     * @param count           Specifies the number of results to return per page. The default is 20, with a maximum of 5,000.
+     * @param cursor          Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @param skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
+     * @return the members of the specified list.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/members">GET lists/members | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor, boolean skipStatus)
+        throws TwitterException;
+
+    /**
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param listId The id of the list.
@@ -598,7 +902,7 @@ public interface ListsResources {
     UserList createUserListMember(long listId, long userId) throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param ownerId The user ID of the user who owns the list being requested by a slug.
@@ -612,7 +916,7 @@ public interface ListsResources {
     UserList createUserListMember(long ownerId, String slug, long userId) throws TwitterException;
 
     /**
-     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+     * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
      * <br>This method calls https://api.twitter.com/1.1/lists/members/create.json
      *
      * @param ownerScreenName The screen name of the user who owns the list being requested by a slug.
@@ -673,11 +977,11 @@ public interface ListsResources {
      * @param newDescription What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList updateUserList(long listId, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -690,11 +994,11 @@ public interface ListsResources {
      * @param newDescription What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 3.0.0
      */
     UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -707,11 +1011,11 @@ public interface ListsResources {
      * @param newDescription  What you'd like to change the list description to.
      * @return the updated list
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update ">POST lists/update | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/update">POST lists/update | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
     UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
@@ -722,11 +1026,11 @@ public interface ListsResources {
      * @param description  The description of the list you are creating. Optional.
      * @return the list that was created
      * @throws twitter4j.TwitterException when Twitter service or network is unavailable, or the authenticated user already has 20 lists(TwitterException.getStatusCode() == 403).
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create ">POST lists/create | Twitter Developers</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/lists/create">POST lists/create | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
     UserList createUserList(String listName, boolean isPublicList, String description)
-            throws TwitterException;
+        throws TwitterException;
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
@@ -770,15 +1074,72 @@ public interface ListsResources {
      * List the lists the specified user follows.
      * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
      *
-     * @param listOwnerScreenName The screen name of the list owner
-     * @param cursor              Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
-     * @return the list of lists
+     * @param listSubscriberScreenName The screen name of the list subscriber
+     * @param cursor                   Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
-    PagableResponseList<UserList> getUserListSubscriptions(String listOwnerScreenName, long cursor)
-            throws TwitterException;
+    PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor)
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listSubscriberScreenName The screen name of the list subscriber
+     * @param count                    The amount of results to return per page. Defaults to 20. No more than 1000 results will ever be returned in a single page.
+     * @param cursor                   Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor)
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listSubscriberId The ID of the list subscriber
+     * @param cursor           Breaks the results into pages. A single page contains 20 lists. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor)
+        throws TwitterException;
+
+    /**
+     * List the lists the specified user follows.
+     * <br>This method calls https://api.twitter.com/1.1/lists/subscriptions.json
+     *
+     * @param listSubscriberId The ID of the list subscriber
+     * @param count            The amount of results to return per page. Defaults to 20. No more than 1000 results will ever be returned in a single page.
+     * @param cursor           Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned to in the response body's next_cursor and previous_cursor attributes to page back and forth in the list.
+     * @return the list of lists the specified user is subscribed to
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/lists/subscriptions">GET lists/subscriptions | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor)
+        throws TwitterException;
+
+    /**
+     * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
+     * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
+     *
+     * @param listOwnerScreenName The screen name of the list owner
+     * @param cursor              Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned in the response body's next_cursor and previous_cursor attributes to page back and forth in the list. It is recommended to always use cursors when the method supports them. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors</a> to navigate collections for more information.
+     * @return lists owned by the specified Twitter user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor)
+        throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -792,7 +1153,20 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor)
-            throws TwitterException;
+        throws TwitterException;
+
+    /**
+     * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
+     * <br>This method calls https://api.twitter.com/1.1/lists/ownerships.json
+     *
+     * @param listOwnerId The id of the list owner
+     * @param cursor      Breaks the results into pages. Provide a value of -1 to begin paging. Provide values as returned in the response body's next_cursor and previous_cursor attributes to page back and forth in the list. It is recommended to always use cursors when the method supports them. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors</a> to navigate collections for more information.
+     * @return lists owned by the specified Twitter user
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 4.0.4
+     */
+    PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor)
+        throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -806,5 +1180,5 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, int count, long cursor)
-            throws TwitterException;
+        throws TwitterException;
 }

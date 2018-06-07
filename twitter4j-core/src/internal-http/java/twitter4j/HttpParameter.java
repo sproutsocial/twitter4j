@@ -19,7 +19,9 @@ package twitter4j;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ import java.util.List;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class HttpParameter implements Comparable, java.io.Serializable {
+public final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializable {
     private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
@@ -220,12 +222,11 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(HttpParameter o) {
         int compared;
-        HttpParameter that = (HttpParameter) o;
-        compared = name.compareTo(that.name);
+        compared = name.compareTo(o.name);
         if (0 == compared) {
-            compared = value.compareTo(that.value);
+            compared = value.compareTo(o.value);
         }
         return compared;
     }
@@ -278,5 +279,47 @@ public final class HttpParameter implements Comparable, java.io.Serializable {
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * @param value string to be decoded. The natural opposite of encode() above.
+     * @return encoded string
+     * @see <a href="http://wiki.oauth.net/TestCases">OAuth / TestCases</a>
+     * @see <a href="http://groups.google.com/group/oauth/browse_thread/thread/a8398d0521f4ae3d/9d79b698ab217df2?hl=en&lnk=gst&q=space+encoding#9d79b698ab217df2">Space encoding - OAuth | Google Groups</a>
+     * @see <a href="http://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax - 2.1. Percent-Encoding</a>
+     */
+    public static String decode(String value) {
+        value = value.replace("%2A", "*");
+        value = value.replace("%2a", "*");
+        value = value.replace("%20", " ");
+        
+        String decoded=null;
+        try {
+            decoded = URLDecoder.decode(value, "UTF-8");
+        }
+        catch(UnsupportedEncodingException ignore) {
+        }
+        
+        return decoded;
+    }
+
+    /**
+     * Parses a query string without the leading "?"
+     *
+     * @param queryParameters a query parameter string, like a=hello&amp;b=world
+     * @return decoded parameters
+     */
+    public static List<HttpParameter> decodeParameters(String queryParameters) {
+        List<HttpParameter> result=new ArrayList<HttpParameter>();
+        for (String pair : queryParameters.split("&")) {
+            String[] parts=pair.split("=", 2);
+            if(parts.length == 2) {
+                String name=decode(parts[0]);
+                String value=decode(parts[1]);
+                if(!name.equals("") && !value.equals(""))
+                    result.add(new HttpParameter(name, value));
+            }
+        }
+        return result;
     }
 }

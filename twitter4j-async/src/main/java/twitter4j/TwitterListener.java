@@ -27,8 +27,6 @@ import java.util.Map;
  * A listener for receiving asynchronous responses from Twitter Async APIs.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see {@link twitter4j.AsyncTwitter}
- * @see {@link twitter4j.TwitterAdapter}
  */
 public interface TwitterListener {
     /* Timelines Resources */
@@ -52,6 +50,8 @@ public interface TwitterListener {
     void retweetedStatus(Status retweetedStatus);
 
     void gotOEmbed(OEmbed oembed);
+
+    void lookedup(ResponseList<Status> statuses);
 
     /* Search Resources */
     void searched(QueryResult queryResult);
@@ -127,6 +127,14 @@ public interface TwitterListener {
     void removedProfileBanner();
 
     void updatedProfileBanner();
+
+    void gotMutesList(ResponseList<User> blockingUsers);
+
+    void gotMuteIDs(IDs blockingUsersIDs);
+
+    void createdMute(User user);
+
+    void destroyedMute(User user);
 
     /* Suggested Users Resources */
     void gotUserSuggestions(ResponseList<User> users);

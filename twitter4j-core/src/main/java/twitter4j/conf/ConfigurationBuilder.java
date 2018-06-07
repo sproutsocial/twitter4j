@@ -156,6 +156,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setOAuth2Scope(String oAuth2Scope) {
+        checkNotBuilt();
+        configurationBean.setOAuth2Scope(oAuth2Scope);
+        return this;
+    }
+
     public ConfigurationBuilder setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuthRequestTokenURL(oAuthRequestTokenURL);
@@ -246,6 +252,18 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setIncludeExtAltTextEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeExtAltTextEnabled(enabled);
+        return this;
+    }
+
+    public ConfigurationBuilder setTweetModeExtended(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setTweetModeExtended(enabled);
+        return this;
+    }
+
     public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeMyRetweetEnabled(enabled);
@@ -255,6 +273,12 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeEntitiesEnabled(enabled);
+        return this;
+    }
+
+    public ConfigurationBuilder setIncludeEmailEnabled(boolean enabled) {
+        checkNotBuilt();
+        configurationBean.setIncludeEmailEnabled(enabled);
         return this;
     }
 
