@@ -87,12 +87,12 @@
     </mailingLists>
     <dependencies>
         <dependency>
-            <groupId>org.twitter4j</groupId>
+            <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
             <version>4.0.6-dmevents</version>
         </dependency>
         <dependency>
-            <groupId>org.twitter4j</groupId>
+            <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-async</artifactId>
             <version>4.0.6-dmevents</version>
             <scope>test</scope>
