@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.twitter4j</groupId>
+    <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>4.0.6</version>
+    <version>4.0.6-dmevents</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -43,18 +43,9 @@
     </issueManagement>
     <distributionManagement>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+          <id>internal</id>
+          <url>http://nexus.int.sproutsocial.com:8081/nexus/content/repositories/releases</url>
         </repository>
-        <snapshotRepository>
-            <id>org.twitter4j</id>
-            <name>twitter4j.org Repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>file:${user.home}/maven2/</url>
-        </snapshotRepository>
     </distributionManagement>
     <profiles>
         <profile>
