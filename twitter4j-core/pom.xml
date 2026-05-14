@@ -3,7 +3,7 @@
 
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>4.0.6-dmevents</version>
+    <version>4.1.0-dmevents</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -219,6 +219,23 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <version>2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.4</version>
+                <executions>
+                    <execution>
+                        <id>us-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <altDeploymentRepository>sproutsocial-us-releases::https://sproutsocial-412335208158.d.codeartifact.us-east-1.amazonaws.com/maven/mvn_releases/</altDeploymentRepository>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
