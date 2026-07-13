@@ -3,7 +3,7 @@
 
     <groupId>com.sproutsocial.org.twitter4j</groupId>
     <artifactId>twitter4j-examples</artifactId>
-    <version>4.0.6-dmevents</version>
+    <version>4.1.0-dmevents</version>
     <packaging>jar</packaging>
     <name>twitter4j-examples</name>
     <description>A Java library for the Twitter API</description>
@@ -89,22 +89,22 @@
         <dependency>
             <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
-            <version>4.0.6-dmevents</version>
+            <version>4.1.0-dmevents</version>
         </dependency>
         <dependency>
             <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-async</artifactId>
-            <version>4.0.6-dmevents</version>
+            <version>4.1.0-dmevents</version>
         </dependency>
         <dependency>
             <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-stream</artifactId>
-            <version>4.0.6-dmevents</version>
+            <version>4.1.0-dmevents</version>
         </dependency>
         <dependency>
             <groupId>com.sproutsocial.org.twitter4j</groupId>
             <artifactId>twitter4j-media-support</artifactId>
-            <version>4.0.6-dmevents</version>
+            <version>4.1.0-dmevents</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
